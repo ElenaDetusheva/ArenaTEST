@@ -1,44 +1,47 @@
 /// <reference types="cypress" />
-
+import happyPass from "../../fixtures/happyPass.json";
 describe('Form testing', ()=>{
 
      it('Use valid data for completing the form ', ()=>{
+      const goals = ['Заказ','Вопрос о товаре','Вопрос в тех.поддержку','Отзыв','Жалоба','Другое']
         cy.visit('https://kontaktnaya-forma.testograf.ru')
       
         cy.get('header div.title').should('be.visible')
                   
         cy.get('.shortText input')
           .eq(0)
-          .type('Ann')
+          .type(happyPass.name)
          
         cy.get('.shortText input')
-          .should('have.value','Ann')
+          .should('have.value',happyPass.name)
 
         cy.get('.shortText input')
           .eq(1)
-          .type('a_karenina@gmail.com')
+          .type(happyPass.email)
 
         cy.get('.shortText input')
           .eq(1)
-          .should('have.value','a_karenina@gmail.com')
+          .should('have.value',happyPass.email)
 
         cy.get('.shortText input')
           .eq(2)
-          .type('+7-32222300')
+          .type(happyPass.phone)
 
         cy.get('.shortText input')
           .eq(2)
-          .should('have.value','+7-32222300')
+          .should('have.value',happyPass.phone)
 
         cy.get('#downshift-0-toggle-button>svg').click() 
-        cy.get('.content .option').eq(0).click()
+        cy.get('.content .option')
+          .eq(0)
+          .click()
         cy.get('form input').should('have.value','Заказ')
+       
+        cy.get('.input textarea')
+          .type(happyPass.message)
 
         cy.get('.input textarea')
-          .type('АБВГДеёжз')
-
-        cy.get('.input textarea')
-          .should('have.value','АБВГДеёжз')
+          .should('have.value',happyPass.message)
 
         cy.get('button').contains('Отправить').click()
 
@@ -49,8 +52,7 @@ describe('Form testing', ()=>{
            .should('not.contain','Ваше имя:')
            .and('not.contain','E-mail:')
            .and('not.contain','Телефон:')
-   
-    }) 
+       }) 
   
 })
 
