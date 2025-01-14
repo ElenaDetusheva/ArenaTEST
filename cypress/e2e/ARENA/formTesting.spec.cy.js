@@ -30,12 +30,18 @@ describe('Form testing', ()=>{
         cy.get('.shortText input')
           .eq(2)
           .should('have.value',happyPass.phone)
-
+        
         cy.get('#downshift-0-toggle-button>svg').click() 
         cy.get('.content .option')
-          .eq(0)
+          .then(($els)=> {
+              const goalOptions = Cypress.$.makeArray($els).map(($el)=>$el.textContent)
+              expect(goalOptions).to.be.deep.equal(happyPass.goalOptionsData)
+            })
+
+        cy.get('.content .option')
+          .eq(1)
           .click()
-        cy.get('form input').should('have.value','Заказ')
+        cy.get('form input').should('have.value',happyPass.goalOptionsData[1])
        
         cy.get('.input textarea')
           .type(happyPass.message)
